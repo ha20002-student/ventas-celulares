@@ -14,12 +14,12 @@
     "bootstrap": "^5.3.9",
     "bootstrap-icons": "^1.13.2",
     "chart.js": "^4.6.2",
+    "firebase": "^13.4.0",
     "pinia": "^4.0.3",
     "vue": "^3.5.42",
     "vue-chartjs": "^5.3.7",
     "vue-router": "^5.3.1"
   },
- 
   "engines": {
     "node": "^24.19.0"
   }
