@@ -8,9 +8,11 @@ const sel = reactive({
   sistema: [],
   pantalla: [],
   nuevo: false,
+  precioMin: '',
+  precioMax: '',
 })
 
-const orden = ref('fecha-desc')
+const orden = ref('precio-asc')
 
 const opcionesOrden = [
   { valor: 'fecha-desc', texto: 'Más recientes' },
@@ -38,7 +40,9 @@ const filtrados = computed(() => {
       (sel.marca.length === 0 || sel.marca.includes(t.marca)) &&
       (sel.sistema.length === 0 || sel.sistema.includes(t.sistema)) &&
       (sel.pantalla.length === 0 || sel.pantalla.includes(t.pantalla)) &&
-      (!sel.nuevo || t.estado === 'Nuevo'),
+      (!sel.nuevo || t.estado === 'Nuevo') &&
+      (sel.precioMin === '' || t.precio >= Number(sel.precioMin)) &&
+      (sel.precioMax === '' || t.precio <= Number(sel.precioMax)),
   )
 
   if (orden.value === 'precio-asc') return lista.sort((a, b) => a.precio - b.precio)
@@ -70,6 +74,8 @@ function limpiar() {
   sel.sistema = []
   sel.pantalla = []
   sel.nuevo = false
+  sel.precioMin = ''
+  sel.precioMax = ''
 }
 </script>
 
@@ -124,7 +130,23 @@ function limpiar() {
           <input class="form-check-input" type="checkbox" id="nuevo" v-model="sel.nuevo" />
           <label class="form-check-label" for="nuevo">Nuevo</label>
         </div>
-
+        <h6 class="texto-russet mt-3">Precio</h6>
+        <div class="d-flex align-items-center gap-2">
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            min="0"
+            placeholder="Desde $"
+            v-model="sel.precioMin"
+          />
+          <input
+            class="form-control form-control-sm"
+            type="number"
+            min="0"
+            placeholder="Hasta $"
+            v-model="sel.precioMax"
+          />
+        </div>
         <button class="btn btn-sm btn-russet mt-3" type="button" @click="limpiar">
           Limpiar filtros
         </button>
