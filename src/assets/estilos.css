@@ -1,15 +1,16 @@
+/* ===== Colores principales (Russet) ===== */
 :root {
-  --russet: #a2352f;
+  --russet: #7b332f;
   --russet-oscuro: #5e2623;
   --russet-claro: #9a4741;
 }
 
-/* Barra de navegación */
+/* ===== Barra de navegación ===== */
 .barra-russet {
   background-color: var(--russet);
 }
 
-/* Botones rojos */
+/* ===== Botones rojos ===== */
 .btn-russet {
   background-color: var(--russet);
   border-color: var(--russet);
@@ -22,7 +23,23 @@
   color: #fff;
 }
 
-/* Textos en rojo */
+/* ===== Textos en rojo ===== */
 .texto-russet {
   color: var(--russet);
+}
+
+/* ===== Checkbox de Bootstrap en color russet ===== */
+.form-check-input {
+  border-radius: 0.4rem;
+  border: 2px solid #adb5bd;
+}
+
+.form-check-input:checked {
+  background-color: var(--russet);
+  border-color: var(--russet);
+}
+
+.form-check-input:focus {
+  border-color: var(--russet);
+  box-shadow: 0 0 0 0.2rem rgba(123, 51, 47, 0.25);
 }

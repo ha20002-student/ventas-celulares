@@ -1,12 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import telefonos from '../data/telefonos.json'
 import CardTelefono from '../components/CardTelefono.vue'
 
-const marcaSel = ref('')
-const sistemaSel = ref('')
-const pantallaSel = ref('')
-const soloNuevos = ref(false)
+const sel = reactive({
+  marca: [],
+  sistema: [],
+  pantalla: [],
+  nuevo: false,
+})
 
 const marcas = [...new Set(telefonos.map((t) => t.marca))]
 const sistemas = [...new Set(telefonos.map((t) => t.sistema))]
@@ -19,18 +21,18 @@ function contar(campo, valor) {
 const filtrados = computed(() =>
   telefonos.filter(
     (t) =>
-      (!marcaSel.value || t.marca === marcaSel.value) &&
-      (!sistemaSel.value || t.sistema === sistemaSel.value) &&
-      (!pantallaSel.value || t.pantalla === pantallaSel.value) &&
-      (!soloNuevos.value || t.estado === 'Nuevo'),
+      (sel.marca.length === 0 || sel.marca.includes(t.marca)) &&
+      (sel.sistema.length === 0 || sel.sistema.includes(t.sistema)) &&
+      (sel.pantalla.length === 0 || sel.pantalla.includes(t.pantalla)) &&
+      (!sel.nuevo || t.estado === 'Nuevo'),
   ),
 )
 
 function limpiar() {
-  marcaSel.value = ''
-  sistemaSel.value = ''
-  pantallaSel.value = ''
-  soloNuevos.value = false
+  sel.marca = []
+  sel.sistema = []
+  sel.pantalla = []
+  sel.nuevo = false
 }
 </script>
 
@@ -43,11 +45,10 @@ function limpiar() {
         <div v-for="m in marcas" :key="m" class="form-check">
           <input
             class="form-check-input"
-            type="radio"
-            name="marca"
+            type="checkbox"
             :id="'marca-' + m"
             :value="m"
-            v-model="marcaSel"
+            v-model="sel.marca"
           />
           <label class="form-check-label" :for="'marca-' + m">
             {{ m }} ({{ contar('marca', m) }})
@@ -58,11 +59,10 @@ function limpiar() {
         <div v-for="s in sistemas" :key="s" class="form-check">
           <input
             class="form-check-input"
-            type="radio"
-            name="sistema"
+            type="checkbox"
             :id="'sistema-' + s"
             :value="s"
-            v-model="sistemaSel"
+            v-model="sel.sistema"
           />
           <label class="form-check-label" :for="'sistema-' + s">
             {{ s }} ({{ contar('sistema', s) }})
@@ -73,19 +73,18 @@ function limpiar() {
         <div v-for="p in pantallas" :key="p" class="form-check">
           <input
             class="form-check-input"
-            type="radio"
-            name="pantalla"
+            type="checkbox"
             :id="'pantalla-' + p"
             :value="p"
-            v-model="pantallaSel"
+            v-model="sel.pantalla"
           />
           <label class="form-check-label" :for="'pantalla-' + p">
-            {{ p }} ({{ contar('pantalla', p) }})
+            {{ p.toFixed(1) }} ({{ contar('pantalla', p) }})
           </label>
         </div>
 
         <div class="form-check mt-3">
-          <input class="form-check-input" type="checkbox" id="nuevo" v-model="soloNuevos" />
+          <input class="form-check-input" type="checkbox" id="nuevo" v-model="sel.nuevo" />
           <label class="form-check-label" for="nuevo">Nuevo</label>
         </div>
 
