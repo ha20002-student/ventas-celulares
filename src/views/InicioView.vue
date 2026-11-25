@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import telefonos from '../data/telefonos.json'
 import CardTelefono from '../components/CardTelefono.vue'
 
@@ -18,6 +18,11 @@ const opcionesOrden = [
   { valor: 'precio-asc', texto: 'Precio: menor a mayor' },
   { valor: 'precio-desc', texto: 'Precio: mayor a menor' },
 ]
+
+// Paginación
+const pagina = ref(1)
+const porPagina = ref(8)
+const opcionesPorPagina = [4, 8, 12, 25]
 
 const marcas = [...new Set(telefonos.map((t) => t.marca))]
 const sistemas = [...new Set(telefonos.map((t) => t.sistema))]
@@ -41,6 +46,24 @@ const filtrados = computed(() => {
   if (orden.value === 'fecha-asc') return lista.sort((a, b) => a.fecha.localeCompare(b.fecha))
   return lista.sort((a, b) => b.fecha.localeCompare(a.fecha))
 })
+
+const totalPaginas = computed(() =>
+  Math.max(1, Math.ceil(filtrados.value.length / porPagina.value)),
+)
+
+const paginados = computed(() => {
+  const inicio = (pagina.value - 1) * porPagina.value
+  return filtrados.value.slice(inicio, inicio + porPagina.value)
+})
+
+// Al cambiar filtros, orden o cantidad por página, volver a la página 1
+watch([filtrados, porPagina], () => {
+  pagina.value = 1
+})
+
+function irA(n) {
+  if (n >= 1 && n <= totalPaginas.value) pagina.value = n
+}
 
 function limpiar() {
   sel.marca = []
@@ -137,8 +160,37 @@ function limpiar() {
 
         <p v-if="filtrados.length === 0" class="text-muted">No hay teléfonos con esos filtros.</p>
         <div class="row g-3">
-          <div v-for="tel in filtrados" :key="tel.id" class="col-12 col-sm-6 col-lg-3">
+          <div v-for="tel in paginados" :key="tel.id" class="col-12 col-sm-6 col-lg-3">
             <CardTelefono :telefono="tel" />
+          </div>
+        </div>
+
+        <!-- Paginación -->
+        <div
+          v-if="filtrados.length > 0"
+          class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2"
+        >
+          <nav aria-label="Paginación">
+            <ul class="pagination pagination-russet mb-0">
+              <li class="page-item" :class="{ disabled: pagina === 1 }">
+                <button class="page-link" type="button" @click="irA(pagina - 1)">&lt;</button>
+              </li>
+              <li
+                v-for="n in totalPaginas"
+                :key="n"
+                class="page-item"
+                :class="{ active: n === pagina }"
+              >
+                <button class="page-link" type="button" @click="irA(n)">{{ n }}</button>
+              </li>
+              <li class="page-item" :class="{ disabled: pagina === totalPaginas }">
+                <button class="page-link" type="button" @click="irA(pagina + 1)">&gt;</button>
+              </li>
+            </ul>
+          </nav>
+
+          <div class="d-flex align-items-center gap-2">
+            <label for="porPagina" class="mb-0">Artículos por página:</label>
           </div>
         </div>
       </section>

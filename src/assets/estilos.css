@@ -58,3 +58,57 @@
   background-color: var(--russet-claro);
   color: #fff;
 }
+/* ===== Menú desplegable de orden en russet ===== */
+.btn-outline-russet {
+  color: var(--russet);
+  border-color: var(--russet);
+  background: #fff;
+}
+
+.btn-outline-russet:hover,
+.btn-outline-russet:focus,
+.btn-outline-russet.show {
+  background-color: var(--russet);
+  border-color: var(--russet);
+  color: #fff;
+}
+
+.btn-outline-russet:focus {
+  box-shadow: 0 0 0 0.2rem rgba(123, 51, 47, 0.25);
+}
+
+.menu-russet .dropdown-item:hover,
+.menu-russet .dropdown-item:focus {
+  background-color: var(--russet-claro);
+  color: #fff;
+}
+
+.menu-russet .dropdown-item.active,
+.menu-russet .dropdown-item:active {
+  background-color: var(--russet);
+  color: #fff;
+}
+
+/* ===== Paginación en russet ===== */
+.pagination-russet .page-link {
+  color: var(--russet);
+}
+
+.pagination-russet .page-link:hover {
+  background-color: #f3e6e5;
+  color: var(--russet-oscuro);
+}
+
+.pagination-russet .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(123, 51, 47, 0.25);
+}
+
+.pagination-russet .page-item.active .page-link {
+  background-color: var(--russet);
+  border-color: var(--russet);
+  color: #fff;
+}
+
+.pagination-russet .page-item.disabled .page-link {
+  color: #adb5bd;
+}
