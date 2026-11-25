@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import telefonos from '../data/telefonos.json'
 import CardTelefono from '../components/CardTelefono.vue'
 
@@ -10,6 +10,15 @@ const sel = reactive({
   nuevo: false,
 })
 
+const orden = ref('fecha-desc')
+
+const opcionesOrden = [
+  { valor: 'fecha-desc', texto: 'Más recientes' },
+  { valor: 'fecha-asc', texto: 'Más antiguos' },
+  { valor: 'precio-asc', texto: 'Precio: menor a mayor' },
+  { valor: 'precio-desc', texto: 'Precio: mayor a menor' },
+]
+
 const marcas = [...new Set(telefonos.map((t) => t.marca))]
 const sistemas = [...new Set(telefonos.map((t) => t.sistema))]
 const pantallas = [...new Set(telefonos.map((t) => t.pantalla))].sort((a, b) => b - a)
@@ -18,15 +27,20 @@ function contar(campo, valor) {
   return telefonos.filter((t) => t[campo] === valor).length
 }
 
-const filtrados = computed(() =>
-  telefonos.filter(
+const filtrados = computed(() => {
+  const lista = telefonos.filter(
     (t) =>
       (sel.marca.length === 0 || sel.marca.includes(t.marca)) &&
       (sel.sistema.length === 0 || sel.sistema.includes(t.sistema)) &&
       (sel.pantalla.length === 0 || sel.pantalla.includes(t.pantalla)) &&
       (!sel.nuevo || t.estado === 'Nuevo'),
-  ),
-)
+  )
+
+  if (orden.value === 'precio-asc') return lista.sort((a, b) => a.precio - b.precio)
+  if (orden.value === 'precio-desc') return lista.sort((a, b) => b.precio - a.precio)
+  if (orden.value === 'fecha-asc') return lista.sort((a, b) => a.fecha.localeCompare(b.fecha))
+  return lista.sort((a, b) => b.fecha.localeCompare(a.fecha))
+})
 
 function limpiar() {
   sel.marca = []
@@ -95,6 +109,32 @@ function limpiar() {
 
       <!-- Listado -->
       <section class="col-12 col-md-9 col-lg-10">
+        <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
+          <span>Ordenar por:</span>
+          <div class="dropdown">
+            <button
+              class="btn btn-sm btn-outline-russet dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              {{ opcionesOrden.find((o) => o.valor === orden).texto }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end menu-russet">
+              <li v-for="o in opcionesOrden" :key="o.valor">
+                <button
+                  class="dropdown-item"
+                  :class="{ active: orden === o.valor }"
+                  type="button"
+                  @click="orden = o.valor"
+                >
+                  {{ o.texto }}
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <p v-if="filtrados.length === 0" class="text-muted">No hay teléfonos con esos filtros.</p>
         <div class="row g-3">
           <div v-for="tel in filtrados" :key="tel.id" class="col-12 col-sm-6 col-lg-3">

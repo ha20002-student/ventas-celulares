@@ -43,3 +43,18 @@
   border-color: var(--russet);
   box-shadow: 0 0 0 0.2rem rgba(123, 51, 47, 0.25);
 }
+/* ===== Selector (Ordenar por) en color russet ===== */
+.form-select:focus {
+  border-color: var(--russet);
+  box-shadow: 0 0 0 0.2rem rgba(123, 51, 47, 0.25);
+}
+
+.form-select option:checked {
+  background-color: var(--russet);
+  color: #fff;
+}
+
+.form-select option:hover {
+  background-color: var(--russet-claro);
+  color: #fff;
+}
