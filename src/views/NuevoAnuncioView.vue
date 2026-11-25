@@ -67,28 +67,32 @@ function elegirImagenes(e) {
   }))
 }
 
-function crear() {
+async function crear() {
   intento.value = true
   if (incompleto.value) return
 
-  anuncios.crear({
-    titulo: form.titulo.trim(),
-    precio: Number(form.precio),
-    marca: marcaFinal.value,
-    modelo: form.modelo.trim(),
-    sistema: form.sistema,
-    pantalla: Number(form.pantalla),
-    rom: Number(form.rom),
-    ram: Number(form.ram),
-    estado: form.estado,
-    vendedor: form.vendedor.trim(),
-    telefono: form.telefono.trim(),
-    descripcion: form.descripcion.trim(),
-    imagenes: imagenes.value,
-  })
-
-  aviso.mostrar('El anuncio se guardó satisfactoriamente', 3)
-  router.push('/')
+  try {
+    await anuncios.crear({
+      titulo: form.titulo.trim(),
+      precio: Number(form.precio),
+      marca: marcaFinal.value,
+      modelo: form.modelo.trim(),
+      sistema: form.sistema,
+      pantalla: Number(form.pantalla),
+      rom: Number(form.rom),
+      ram: Number(form.ram),
+      estado: form.estado,
+      vendedor: form.vendedor.trim(),
+      telefono: form.telefono.trim(),
+      descripcion: form.descripcion.trim(),
+      imagenes: imagenes.value,
+    })
+    aviso.mostrar('El anuncio se guardó satisfactoriamente', 3)
+    router.push('/')
+  } catch (e) {
+    console.error(e)
+    aviso.mostrar('No se pudo guardar el anuncio', 3)
+  }
 }
 
 function cancelar() {
