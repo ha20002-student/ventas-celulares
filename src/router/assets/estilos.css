@@ -1,0 +1,28 @@
+:root {
+  --russet: #7b332f;
+  --russet-oscuro: #5e2623;
+  --russet-claro: #9a4741;
+}
+
+/* Barra de navegación */
+.barra-russet {
+  background-color: var(--russet);
+}
+
+/* Botones rojos */
+.btn-russet {
+  background-color: var(--russet);
+  border-color: var(--russet);
+  color: #fff;
+}
+
+.btn-russet:hover {
+  background-color: var(--russet-oscuro);
+  border-color: var(--russet-oscuro);
+  color: #fff;
+}
+
+/* Textos en rojo */
+.texto-russet {
+  color: var(--russet);
+}
