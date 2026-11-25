@@ -1,13 +1,14 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
-import telefonos from '../data/telefonos.json'
+import { useAnunciosStore } from '../stores/anuncios'
 import { useCarritoStore } from '../stores/carrito'
 
 const route = useRoute()
 const carrito = useCarritoStore()
 
-const telefono = computed(() => telefonos.find((t) => t.id === Number(route.params.id)))
+const anuncios = useAnunciosStore()
+const telefono = computed(() => anuncios.lista.find((t) => t.id === Number(route.params.id)))
 
 function comprar() {
   carrito.agregar(telefono.value)

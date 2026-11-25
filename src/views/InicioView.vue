@@ -1,11 +1,12 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
-import telefonos from '../data/telefonos.json'
+import { useAnunciosStore } from '../stores/anuncios'
 import CardTelefono from '../components/CardTelefono.vue'
 import { useBusquedaStore } from '../stores/busqueda'
 
-const busqueda = useBusquedaStore()
+const anuncios = useAnunciosStore()
 
+const busqueda = useBusquedaStore()
 const sel = reactive({
   marca: [],
   sistema: [],
@@ -29,16 +30,18 @@ const pagina = ref(1)
 const porPagina = ref(8)
 const opcionesPorPagina = [4, 8, 12, 25]
 
-const marcas = [...new Set(telefonos.map((t) => t.marca))]
-const sistemas = [...new Set(telefonos.map((t) => t.sistema))]
-const pantallas = [...new Set(telefonos.map((t) => t.pantalla))].sort((a, b) => b - a)
+const marcas = computed(() => [...new Set(anuncios.lista.map((t) => t.marca))])
+const sistemas = computed(() => [...new Set(anuncios.lista.map((t) => t.sistema))])
+const pantallas = computed(() =>
+  [...new Set(anuncios.lista.map((t) => t.pantalla))].sort((a, b) => b - a),
+)
 
 function contar(campo, valor) {
-  return telefonos.filter((t) => t[campo] === valor).length
+  return anuncios.lista.filter((t) => t[campo] === valor).length
 }
 
 const filtrados = computed(() => {
-  const lista = telefonos.filter(
+  const lista = anuncios.lista.filter(
     (t) =>
       (sel.marca.length === 0 || sel.marca.includes(t.marca)) &&
       (sel.sistema.length === 0 || sel.sistema.includes(t.sistema)) &&
