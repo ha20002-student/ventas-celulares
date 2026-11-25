@@ -1,13 +1,22 @@
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from 'firebase/firestore'
 
 const app = initializeApp({
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyBSF7aFTA2F05O62W5nbcxcxOesqDgBjSw',
+  authDomain: 'ventas-celulares.firebaseapp.com',
+  projectId: 'ventas-celulares',
+  storageBucket: 'ventas-celulares.firebasestorage.app',
+  messagingSenderId: '761136440258',
+  appId: '1:761136440258:web:9f2fff197b6a11a0a56c5b',
 })
 
-export const db = getFirestore(app)
+export const db = initializeFirestore(app, {
+  // Si la conexión normal se atasca, usa una alternativa
+  experimentalAutoDetectLongPolling: true,
+  // Guarda los datos en el navegador: desde la segunda visita carga al instante
+  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+})
