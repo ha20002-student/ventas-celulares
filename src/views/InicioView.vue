@@ -2,6 +2,9 @@
 import { ref, reactive, computed, watch } from 'vue'
 import telefonos from '../data/telefonos.json'
 import CardTelefono from '../components/CardTelefono.vue'
+import { useBusquedaStore } from '../stores/busqueda'
+
+const busqueda = useBusquedaStore()
 
 const sel = reactive({
   marca: [],
@@ -42,7 +45,11 @@ const filtrados = computed(() => {
       (sel.pantalla.length === 0 || sel.pantalla.includes(t.pantalla)) &&
       (!sel.nuevo || t.estado === 'Nuevo') &&
       (sel.precioMin === '' || t.precio >= Number(sel.precioMin)) &&
-      (sel.precioMax === '' || t.precio <= Number(sel.precioMax)),
+      (sel.precioMax === '' || t.precio <= Number(sel.precioMax)) &&
+      (busqueda.texto === '' ||
+        (t.titulo + ' ' + t.marca + ' ' + t.modelo)
+          .toLowerCase()
+          .includes(busqueda.texto.toLowerCase())),
   )
 
   if (orden.value === 'precio-asc') return lista.sort((a, b) => a.precio - b.precio)
@@ -60,7 +67,6 @@ const paginados = computed(() => {
   return filtrados.value.slice(inicio, inicio + porPagina.value)
 })
 
-// Al cambiar filtros, orden o cantidad por página, volver a la página 1
 watch([filtrados, porPagina], () => {
   pagina.value = 1
 })
@@ -76,6 +82,7 @@ function limpiar() {
   sel.nuevo = false
   sel.precioMin = ''
   sel.precioMax = ''
+  busqueda.texto = ''
 }
 </script>
 
@@ -130,6 +137,7 @@ function limpiar() {
           <input class="form-check-input" type="checkbox" id="nuevo" v-model="sel.nuevo" />
           <label class="form-check-label" for="nuevo">Nuevo</label>
         </div>
+
         <h6 class="texto-russet mt-3">Precio</h6>
         <div class="d-flex align-items-center gap-2">
           <input
@@ -147,6 +155,7 @@ function limpiar() {
             v-model="sel.precioMax"
           />
         </div>
+
         <button class="btn btn-sm btn-russet mt-3" type="button" @click="limpiar">
           Limpiar filtros
         </button>
@@ -213,6 +222,9 @@ function limpiar() {
 
           <div class="d-flex align-items-center gap-2">
             <label for="porPagina" class="mb-0">Artículos por página:</label>
+            <select id="porPagina" class="form-select form-select-sm w-auto" v-model="porPagina">
+              <option v-for="n in opcionesPorPagina" :key="n" :value="n">{{ n }}</option>
+            </select>
           </div>
         </div>
       </section>

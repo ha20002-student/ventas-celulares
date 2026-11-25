@@ -1,5 +1,13 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
+import { useBusquedaStore } from '../stores/busqueda'
+
+const busqueda = useBusquedaStore()
+const router = useRouter()
+
+function buscar() {
+  router.push('/')
+}
 </script>
 
 <template>
@@ -37,12 +45,18 @@ import { RouterLink } from 'vue-router'
           </li>
         </ul>
 
-        <div class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Buscar" />
-          <button class="btn btn-outline-light" type="button">
+        <form class="d-flex" @submit.prevent="buscar">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Buscar"
+            v-model="busqueda.texto"
+            @input="buscar"
+          />
+          <button class="btn btn-outline-light" type="submit">
             <i class="bi bi-search"></i>
           </button>
-        </div>
+        </form>
       </div>
     </div>
   </nav>
