@@ -26,14 +26,14 @@ const form = reactive({
 
 const imagenes = ref([]) // { nombre, tamano, tipo }
 const intento = ref(false)
-
+const guardando = ref(false)
 const marcasBase = ['Samsung', 'Huawei', 'Nokia', 'iPhone', 'Xiaomi']
 const sistemas = ['Android', 'Windows', 'iOS']
 
 // Marcas base + las que ya existen en anuncios (Motorola, Honor, etc.)
 const marcas = computed(() => {
   const todas = [...marcasBase, ...anuncios.lista.map((t) => t.marca)]
-  return [...new Set(todas)]
+  return [...new Set(todas)].filter((m) => m && m !== '__otra__')
 })
 
 // Marca final: la elegida, o la escrita si eligió "Otra"
@@ -69,10 +69,11 @@ function elegirImagenes(e) {
 
 async function crear() {
   intento.value = true
-  if (incompleto.value) return
+  if (incompleto.value || guardando.value) return
 
+  guardando.value = true
   try {
-    await anuncios.crear({
+    const promesa = anuncios.crear({
       titulo: form.titulo.trim(),
       precio: Number(form.precio),
       marca: marcaFinal.value,
@@ -87,11 +88,14 @@ async function crear() {
       descripcion: form.descripcion.trim(),
       imagenes: imagenes.value,
     })
+
     aviso.mostrar('El anuncio se guardó satisfactoriamente', 3)
     router.push('/')
+    await promesa
   } catch (e) {
-    console.error(e)
-    aviso.mostrar('No se pudo guardar el anuncio', 3)
+    console.error('Error al guardar:', e)
+    aviso.mostrar('No se pudo guardar el anuncio', 4)
+    guardando.value = false
   }
 }
 
@@ -168,6 +172,7 @@ function cancelar() {
           </select>
           <input
             v-if="form.marca === '__otra__'"
+            id="marcaOtra"
             class="form-control mt-2"
             :class="{ 'is-invalid': intento && !marcaFinal }"
             placeholder="Escribe la marca (ej. Motorola)"
@@ -294,7 +299,9 @@ function cancelar() {
       </p>
 
       <div class="d-flex gap-2">
-        <button class="btn btn-russet" type="submit">Crear</button>
+        <button class="btn btn-russet" type="submit" :disabled="guardando">
+          {{ guardando ? 'Guardando...' : 'Crear' }}
+        </button>
         <button class="btn btn-outline-russet" type="button" @click="cancelar">Cancelar</button>
       </div>
     </form>

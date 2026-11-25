@@ -8,8 +8,9 @@ const route = useRoute()
 const carrito = useCarritoStore()
 
 const anuncios = useAnunciosStore()
-const telefono = computed(() => anuncios.lista.find((t) => t.id === Number(route.params.id)))
-
+const telefono = computed(() =>
+  anuncios.lista.find((t) => String(t.id) === String(route.params.id)),
+)
 function comprar() {
   carrito.agregar(telefono.value)
   carrito.abrir('carrito')
