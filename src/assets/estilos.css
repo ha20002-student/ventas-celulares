@@ -112,3 +112,300 @@
 .pagination-russet .page-item.disabled .page-link {
   color: #adb5bd;
 }
+
+/* ===== Insignia del carrito en la NavBar ===== */
+.navbar .nav-link.btn-link {
+  text-decoration: none;
+}
+
+.insignia-carrito {
+  background-color: #e0847a;
+  color: #2b1412;
+}
+
+/* ===== Panel lateral del carrito ===== */
+.panel-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1040;
+}
+
+.panel-fondo.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.panel-carrito {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: #241311;
+  color: #f5ebe9;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1050;
+}
+
+.panel-carrito.visible {
+  transform: translateX(0);
+}
+
+.panel-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-contador {
+  display: inline-block;
+  min-width: 1.5rem;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 1rem;
+  background: var(--russet-claro);
+  color: #fff;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.panel-cerrar {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5ebe9;
+}
+
+.panel-tabs {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.panel-tabs button {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: #c9b5b1;
+}
+
+.panel-tabs button.activa {
+  color: #fff;
+  border-bottom-color: #e0847a;
+}
+
+.panel-cuerpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem;
+}
+
+.panel-vacio {
+  margin-top: 3rem;
+  text-align: center;
+  color: #c9b5b1;
+}
+
+.panel-suave {
+  color: #c9b5b1;
+}
+
+.panel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.panel-foto {
+  display: grid;
+  place-items: center;
+  width: 3.8rem;
+  height: 3.8rem;
+  flex-shrink: 0;
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 1.6rem;
+}
+
+.panel-precio {
+  color: #e0847a;
+  font-weight: 700;
+}
+
+.panel-borrar {
+  border: none;
+  background: none;
+  color: #e0847a;
+}
+
+.panel-pie {
+  padding: 1rem 1.25rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.panel-total {
+  align-items: baseline;
+  font-weight: 700;
+}
+
+.panel-total span:last-child {
+  font-size: 1.8rem;
+}
+
+.panel-pie hr {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Documentos de compra */
+.panel-doc {
+  margin-bottom: 1rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.panel-doc-lista {
+  margin: 0.6rem 0 0;
+  padding-left: 1.1rem;
+}
+
+/* Confirmación */
+.panel-confirmacion {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.panel-check {
+  display: grid;
+  place-items: center;
+  width: 7rem;
+  height: 7rem;
+  margin-bottom: 1.2rem;
+  border-radius: 50%;
+  background: rgba(224, 132, 122, 0.15);
+  border: 2px dashed #e0847a;
+  color: #e0847a;
+  font-size: 3rem;
+}
+
+.panel-vendedor {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.6rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.8rem;
+}
+
+.btn-seguir {
+  margin-top: 0.8rem;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 0.8rem;
+  background: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-seguir:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-enlace {
+  margin-top: 0.6rem;
+  border: none;
+  background: none;
+  color: #e0847a;
+  text-decoration: underline;
+}
+
+/* ===== Botón "Finalizar compra" con borde animado ===== */
+@property --angulo {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.btn-finalizar {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  margin-top: 0.8rem;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: none;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.btn-finalizar::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -2;
+  border-radius: calc(0.9rem + 3px);
+  background: conic-gradient(
+    from var(--angulo),
+    #7b332f,
+    #e0847a,
+    #f2c14e,
+    #e0847a,
+    #9a4741,
+    #7b332f
+  );
+  animation: giro-borde 3s linear infinite;
+}
+
+.btn-finalizar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0.9rem;
+  background: var(--russet);
+  transition: background 0.2s ease;
+}
+
+.btn-finalizar:hover::after {
+  background: var(--russet-oscuro);
+}
+
+.btn-finalizar:hover::before {
+  animation-duration: 1.2s;
+}
+
+@keyframes giro-borde {
+  to {
+    --angulo: 360deg;
+  }
+}

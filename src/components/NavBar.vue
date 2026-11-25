@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
 import { useBusquedaStore } from '../stores/busqueda'
+import { useCarritoStore } from '../stores/carrito'
 
 const busqueda = useBusquedaStore()
+const carrito = useCarritoStore()
 const router = useRouter()
 
 function buscar() {
@@ -38,7 +40,17 @@ function buscar() {
             <RouterLink class="nav-link" to="/nuevo">Nuevo anuncio</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/carrito">Carrito</RouterLink>
+            <button class="nav-link btn btn-link" type="button" @click="carrito.abrir('carrito')">
+              <i class="bi bi-cart3"></i> Carrito
+              <span v-if="carrito.items.length" class="badge rounded-pill insignia-carrito">
+                {{ carrito.items.length }}
+              </span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-link" type="button" @click="carrito.abrir('compras')">
+              <i class="bi bi-receipt"></i> Mis compras
+            </button>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/estadisticas">Estadísticas</RouterLink>

@@ -1,21 +1,17 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, RouterLink } from 'vue-router'
 import telefonos from '../data/telefonos.json'
 import { useCarritoStore } from '../stores/carrito'
 
 const route = useRoute()
-const router = useRouter()
 const carrito = useCarritoStore()
 
 const telefono = computed(() => telefonos.find((t) => t.id === Number(route.params.id)))
 
-const agregado = ref(false)
-
 function comprar() {
   carrito.agregar(telefono.value)
-  agregado.value = true
-  setTimeout(() => router.push('/carrito'), 800)
+  carrito.abrir('carrito')
 }
 </script>
 
@@ -47,13 +43,8 @@ function comprar() {
       </ul>
 
       <p>{{ telefono.descripcion }}</p>
-
-      <div v-if="agregado" class="alert alert-success py-2">
-        Agregado al carrito. Redirigiendo...
-      </div>
     </div>
 
-    <!-- Botones siempre visibles -->
     <div class="barra-acciones">
       <RouterLink class="btn btn-outline-russet" to="/">Inicio</RouterLink>
       <button v-if="telefono" class="btn btn-russet" type="button" @click="comprar">Comprar</button>
