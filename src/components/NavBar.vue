@@ -2,9 +2,11 @@
 import { RouterLink, useRouter } from 'vue-router'
 import { useBusquedaStore } from '../stores/busqueda'
 import { useCarritoStore } from '../stores/carrito'
+import { useTemaStore } from '../stores/tema'
 
 const busqueda = useBusquedaStore()
 const carrito = useCarritoStore()
+const tema = useTemaStore()
 const router = useRouter()
 
 function buscar() {
@@ -18,6 +20,19 @@ function buscar() {
       <RouterLink class="navbar-brand" to="/">
         <i class="bi bi-phone"></i> Tienda CellPhone
       </RouterLink>
+
+      <!-- Botón de modo oscuro: siempre visible en la barra -->
+      <button
+        class="btn-tema ms-auto ms-lg-2 me-2 me-lg-0 order-lg-last"
+        type="button"
+        :aria-label="tema.oscuro ? 'Activar modo claro' : 'Activar modo oscuro'"
+        @click="tema.alternar()"
+      >
+        <i class="bi" :class="tema.oscuro ? 'bi-sun-fill' : 'bi-moon-fill'"></i>
+        <span class="tema-tip">
+          {{ tema.oscuro ? 'Activar modo claro' : 'Activar modo oscuro' }}
+        </span>
+      </button>
 
       <button
         class="navbar-toggler"
@@ -59,13 +74,15 @@ function buscar() {
 
         <form class="d-flex" @submit.prevent="buscar">
           <input
+            id="buscar"
+            name="buscar"
             class="form-control me-2"
             type="search"
             placeholder="Buscar"
             v-model="busqueda.texto"
             @input="buscar"
           />
-          <button class="btn btn-outline-light" type="submit">
+          <button class="btn btn-outline-light" type="submit" aria-label="Buscar">
             <i class="bi bi-search"></i>
           </button>
         </form>

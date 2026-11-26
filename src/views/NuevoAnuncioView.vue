@@ -25,7 +25,9 @@ const form = reactive({
   descripcion: '',
 })
 
+const MAX_IMAGENES = 4
 const imagenes = ref([]) // { archivo, nombre, tamano, tipo }
+const avisoImagenes = ref('')
 const intento = ref(false)
 const guardando = ref(false)
 const marcasBase = ['Samsung', 'Huawei', 'Nokia', 'iPhone', 'Xiaomi']
@@ -57,14 +59,33 @@ const incompleto = computed(
     !form.telefono.trim(),
 )
 
+// Agrega las fotos elegidas a las que ya estaban (hasta 4 en total)
 function elegirImagenes(e) {
-  const archivos = [...e.target.files].slice(0, 4)
-  imagenes.value = archivos.map((a) => ({
-    archivo: a,
-    nombre: a.name,
-    tamano: Math.round(a.size / 1024) + ' kb',
-    tipo: a.type.split('/')[1] || 'img',
-  }))
+  avisoImagenes.value = ''
+
+  for (const a of [...e.target.files]) {
+    if (imagenes.value.length >= MAX_IMAGENES) {
+      avisoImagenes.value = 'Solo se permiten ' + MAX_IMAGENES + ' imágenes por anuncio.'
+      break
+    }
+    const repetida = imagenes.value.some((i) => i.nombre === a.name && i.archivo.size === a.size)
+    if (repetida) continue
+
+    imagenes.value.push({
+      archivo: a,
+      nombre: a.name,
+      tamano: Math.round(a.size / 1024) + ' kb',
+      tipo: a.type.split('/')[1] || 'img',
+    })
+  }
+
+  // Limpia el selector para poder elegir otra foto (incluso la misma)
+  e.target.value = ''
+}
+
+function quitarImagen(i) {
+  imagenes.value.splice(i, 1)
+  avisoImagenes.value = ''
 }
 
 async function subirTodas() {
@@ -286,30 +307,47 @@ function cancelar() {
       </div>
 
       <div class="mb-3">
-        <label class="form-label" for="imagenes">Imágenes (máximo 4)</label>
+        <label class="form-label" for="imagenes">
+          Imágenes (máximo 4)
+          <span class="text-muted small ms-1">{{ imagenes.length }}/{{ MAX_IMAGENES }}</span>
+        </label>
         <input
           id="imagenes"
           type="file"
           accept="image/*"
           multiple
           class="form-control"
+          :disabled="imagenes.length >= MAX_IMAGENES"
           @change="elegirImagenes"
         />
-        <table v-if="imagenes.length" class="table table-sm mt-2">
+        <p v-if="avisoImagenes" class="text-danger small mt-1 mb-0">{{ avisoImagenes }}</p>
+
+        <table v-if="imagenes.length" class="table table-sm mt-2 align-middle">
           <thead>
             <tr>
               <th>N</th>
               <th>Nombre</th>
               <th>Tamaño</th>
               <th>Tipo</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(img, i) in imagenes" :key="i">
+            <tr v-for="(img, i) in imagenes" :key="img.nombre + i">
               <td>{{ i + 1 }}</td>
               <td>{{ img.nombre }}</td>
               <td>{{ img.tamano }}</td>
               <td>{{ img.tipo }}</td>
+              <td class="text-end">
+                <button
+                  class="btn btn-sm btn-outline-russet"
+                  type="button"
+                  aria-label="Quitar imagen"
+                  @click="quitarImagen(i)"
+                >
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
