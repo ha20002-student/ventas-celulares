@@ -40,6 +40,26 @@ function siguiente() {
   actual.value = (indice.value + 1) % fotos.value.length
 }
 
+// Número en formato internacional (El Salvador: 503)
+const numeroCompleto = computed(() => {
+  const digitos = (telefono.value?.telefono || '').replace(/\D/g, '')
+  return digitos.length === 8 ? '503' + digitos : digitos
+})
+
+const urlWhatsapp = computed(() => {
+  const t = telefono.value
+  if (!t) return '#'
+  const mensaje =
+    'Hola, me interesa tu anuncio "' +
+    t.titulo +
+    '" ($' +
+    t.precio.toFixed(2) +
+    ') en Tienda CellPhone.'
+  return 'https://wa.me/' + numeroCompleto.value + '?text=' + encodeURIComponent(mensaje)
+})
+
+const urlLlamada = computed(() => 'tel:+' + numeroCompleto.value)
+
 // Tarjetas de "Vista rápida"
 const ficha = computed(() => {
   const t = telefono.value
@@ -50,7 +70,7 @@ const ficha = computed(() => {
     { icono: 'bi-arrows-fullscreen', etiqueta: 'Pantalla', valor: t.pantalla + ' pulgadas' },
     { icono: 'bi-layers', etiqueta: 'Sistema', valor: t.sistema },
     { icono: 'bi-hdd', etiqueta: 'Memoria ROM', valor: t.rom + ' GB' },
-    { icono: 'bi-memory', etiqueta: 'Memoria RAM', valor: t.ram + ' GB' },
+    { icono: 'bi-cpu', etiqueta: 'Memoria RAM', valor: t.ram + ' GB' },
   ]
 })
 
@@ -133,9 +153,19 @@ function comprar() {
           <h3 class="mb-3">{{ telefono.titulo }}</h3>
           <div class="precio-grande mb-3">${{ telefono.precio.toFixed(2) }}</div>
 
-          <button class="btn btn-russet btn-lg w-100 mb-3" type="button" @click="comprar">
-            <i class="bi bi-cart3 me-1"></i> Comprar
+          <button class="btn-brillo btn-brillo-ancho mb-3" type="button" @click="comprar">
+            <i class="bi bi-cart3 me-2"></i> Comprar
           </button>
+
+          <!-- WhatsApp: abre una pestaña nueva -->
+          <a
+            class="btn-brillo btn-brillo-ancho mb-3"
+            :href="urlWhatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="bi bi-whatsapp me-2"></i> Contactar por WhatsApp
+          </a>
 
           <div class="vendedor-tarjeta">
             <div class="vendedor-inicial">{{ telefono.vendedor.charAt(0).toUpperCase() }}</div>
@@ -147,7 +177,11 @@ function comprar() {
                 <span class="texto-suave">Teléfono:</span> <strong>{{ telefono.telefono }}</strong>
               </div>
             </div>
-            <i class="bi bi-telephone vendedor-icono"></i>
+
+            <!-- Llamada: abre la app de teléfono -->
+            <a class="btn-brillo btn-brillo-corto" :href="urlLlamada">
+              <i class="bi bi-telephone me-2"></i> Llamar
+            </a>
           </div>
         </div>
       </div>

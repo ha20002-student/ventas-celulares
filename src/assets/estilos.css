@@ -647,3 +647,410 @@
     height: 300px;
   }
 }
+/* ===== Botones de vidrio neón (WhatsApp y llamada) ===== */
+.neon {
+  --neon: #e0847a;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  height: 50px;
+  border-radius: 30px;
+  background: #2b1412;
+}
+
+.neon-ancho {
+  width: 100%;
+}
+
+.neon-corto {
+  width: 135px;
+  height: 44px;
+}
+
+.neon-dorado {
+  --neon: #f2c14e;
+}
+
+.neon a {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  letter-spacing: 1px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: 0.5s;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.neon:hover a {
+  letter-spacing: 2px;
+}
+
+/* Brillo que cruza el botón */
+.neon a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.18), transparent);
+  transform: skewX(45deg) translate(0);
+  transition: 0.5s;
+}
+
+.neon:hover a::before {
+  transform: skewX(45deg) translate(200px);
+}
+
+/* Barras de luz arriba y abajo */
+.neon::before,
+.neon::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 30px;
+  height: 10px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: var(--neon);
+  box-shadow:
+    0 0 5px var(--neon),
+    0 0 15px var(--neon),
+    0 0 30px var(--neon);
+  transition: 0.5s;
+  transition-delay: 0.2s;
+}
+
+.neon::before {
+  bottom: -5px;
+}
+
+.neon::after {
+  top: -5px;
+}
+
+.neon:hover::before {
+  bottom: 0;
+  width: 80%;
+  height: 50%;
+  border-radius: 30px;
+}
+
+.neon:hover::after {
+  top: 0;
+  width: 80%;
+  height: 50%;
+  border-radius: 30px;
+}
+/* ===== Botones de vidrio: colores mate y oscuros ===== */
+.neon {
+  --neon: #8a3d36;
+  background: #1c0f0e;
+}
+
+.neon-dorado {
+  --neon: #9c7a3c;
+}
+
+.neon::before,
+.neon::after {
+  box-shadow: 0 0 4px var(--neon);
+}
+
+.neon a {
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.3);
+  color: #eddcd9;
+}
+
+.neon a::before {
+  background: linear-gradient(to left, rgba(255, 255, 255, 0.08), transparent);
+}
+
+/* ===== Botón Comprar estilo doodle ===== */
+.doodle-envoltura {
+  padding-top: 14px;
+}
+
+.doodle-btn {
+  position: relative;
+  width: 100%;
+  padding: 14px 30px;
+  border: 4px solid #1e1010;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  background: #7b332f;
+  box-shadow: 6px 8px 0 #1e1010;
+  color: #f3e4e1;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition:
+    transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.3s ease;
+}
+
+/* Línea punteada interior, como una etiqueta de cuaderno */
+.doodle-btn::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 2px dashed rgba(243, 228, 225, 0.3);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.doodle-texto {
+  position: relative;
+  z-index: 2;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.doodle-btn:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  box-shadow: 8px 12px 0 #1e1010;
+  background: linear-gradient(85deg, #7b332f, #9a4741, #a8693f, #8a6a3c, #5e2623);
+  background-size: 300% 300%;
+  animation: doodle-viento 3s ease-in-out infinite;
+}
+
+@keyframes doodle-viento {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.doodle-btn:active {
+  transform: translate(4px, 6px) rotate(1deg) !important;
+  box-shadow: 2px 2px 0 #1e1010 !important;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+}
+
+.doodle-btn:focus-visible {
+  outline: 4px dashed #9c7a3c;
+  outline-offset: 6px;
+}
+
+/* Íconos colgando */
+.doodle-icono {
+  position: absolute;
+  top: -16px;
+  z-index: 5;
+  transform-origin: 50% 0;
+  filter: drop-shadow(3px 4px 0 #1e1010);
+  pointer-events: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.icono-1 {
+  right: 18px;
+  font-size: 1.5rem;
+  color: #c9a24f;
+  transform: rotate(8deg);
+}
+
+.icono-2 {
+  left: 50px;
+  font-size: 1.2rem;
+  color: #c98b80;
+  transform: rotate(-12deg);
+}
+
+.icono-3 {
+  left: 14px;
+  font-size: 1.3rem;
+  color: #b9a592;
+  transform: rotate(5deg);
+}
+
+.doodle-btn:hover .icono-1 {
+  animation: columpio-1 2.5s cubic-bezier(0.52, 0, 0.58, 1) infinite;
+}
+
+.doodle-btn:hover .icono-2 {
+  animation: columpio-2 3s cubic-bezier(0.52, 0, 0.58, 1) 0.5s infinite;
+}
+
+.doodle-btn:hover .icono-3 {
+  animation: columpio-3 2s cubic-bezier(0.52, 0, 0.58, 1) 0.2s infinite;
+}
+
+.doodle-btn:active .icono-1 {
+  transform: rotate(-25deg) scale(1.1);
+}
+
+.doodle-btn:active .icono-2 {
+  transform: rotate(30deg) scale(1.1);
+}
+
+.doodle-btn:active .icono-3 {
+  transform: rotate(-20deg) scale(1.1);
+}
+
+@keyframes columpio-1 {
+  0%,
+  100% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes columpio-2 {
+  0%,
+  100% {
+    transform: rotate(-12deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+
+@keyframes columpio-3 {
+  0%,
+  100% {
+    transform: rotate(5deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+}
+/* ===== Botones con borde animado (mismo efecto que "Finalizar compra") ===== */
+.btn-brillo {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: 0.9rem;
+  background: none;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn-brillo::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -2;
+  border-radius: calc(0.9rem + 3px);
+  background: conic-gradient(
+    from var(--angulo),
+    #7b332f,
+    #e0847a,
+    #f2c14e,
+    #e0847a,
+    #9a4741,
+    #7b332f
+  );
+  animation: giro-borde 3s linear infinite;
+}
+
+.btn-brillo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 0.9rem;
+  background: var(--russet);
+  transition: background 0.2s ease;
+}
+
+.btn-brillo:hover {
+  color: #fff;
+}
+
+.btn-brillo:hover::after {
+  background: var(--russet-oscuro);
+}
+
+.btn-brillo:hover::before {
+  animation-duration: 1.2s;
+}
+
+.btn-brillo-ancho {
+  width: 100%;
+}
+
+.btn-brillo-corto {
+  flex-shrink: 0;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.95rem;
+}
+/* ===== Carrusel: puntos y transición ===== */
+.galeria-principal:focus-visible {
+  outline: 3px solid rgba(123, 51, 47, 0.4);
+  outline-offset: 3px;
+}
+
+.galeria-puntos {
+  position: absolute;
+  bottom: 0.8rem;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  transform: translateX(-50%);
+  border-radius: 1rem;
+  background: rgba(30, 16, 16, 0.55);
+}
+
+.punto {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  transition: all 0.25s ease;
+}
+
+.punto.activo {
+  width: 1.4rem;
+  background: #e0847a;
+}
+
+.desvanecer-enter-active,
+.desvanecer-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.desvanecer-enter-from,
+.desvanecer-leave-to {
+  opacity: 0;
+}
