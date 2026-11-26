@@ -1,16 +1,21 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useAnunciosStore } from '../stores/anuncios'
 import { useCarritoStore } from '../stores/carrito'
+import { urlImagen } from '../couchdb'
 
 const route = useRoute()
+const anuncios = useAnunciosStore()
 const carrito = useCarritoStore()
 
-const anuncios = useAnunciosStore()
 const telefono = computed(() =>
   anuncios.lista.find((t) => String(t.id) === String(route.params.id)),
 )
+
+const fotos = computed(() => (telefono.value?.imagenes || []).filter((i) => i.id))
+const rotas = ref([])
+
 function comprar() {
   carrito.agregar(telefono.value)
   carrito.abrir('carrito')
@@ -19,7 +24,9 @@ function comprar() {
 
 <template>
   <div class="container py-4 pb-5 mb-5">
-    <div v-if="!telefono" class="text-center py-5">
+    <div v-if="anuncios.cargando" class="text-muted">Cargando...</div>
+
+    <div v-else-if="!telefono" class="text-center py-5">
       <p class="text-muted">No se encontró el anuncio.</p>
       <RouterLink class="btn btn-russet" to="/">Volver al inicio</RouterLink>
     </div>
@@ -27,6 +34,18 @@ function comprar() {
     <div v-else>
       <h4 class="mb-2">{{ telefono.titulo }}</h4>
       <h3 class="texto-russet mb-3">${{ telefono.precio.toFixed(2) }}</h3>
+
+      <div v-if="fotos.length" class="d-flex flex-wrap gap-2 mb-3">
+        <template v-for="f in fotos" :key="f.id">
+          <img
+            v-if="!rotas.includes(f.id)"
+            :src="urlImagen(f.id)"
+            :alt="f.nombre"
+            class="foto-detalle"
+            @error="rotas.push(f.id)"
+          />
+        </template>
+      </div>
 
       <p class="mb-4">
         <strong>Vendedor:</strong> {{ telefono.vendedor }}

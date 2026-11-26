@@ -3,6 +3,7 @@ import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAnunciosStore } from '../stores/anuncios'
 import { useAvisoStore } from '../stores/aviso'
+import { subirImagen } from '../couchdb'
 
 const router = useRouter()
 const anuncios = useAnunciosStore()
@@ -24,19 +25,17 @@ const form = reactive({
   descripcion: '',
 })
 
-const imagenes = ref([]) // { nombre, tamano, tipo }
+const imagenes = ref([]) // { archivo, nombre, tamano, tipo }
 const intento = ref(false)
 const guardando = ref(false)
 const marcasBase = ['Samsung', 'Huawei', 'Nokia', 'iPhone', 'Xiaomi']
 const sistemas = ['Android', 'Windows', 'iOS']
 
-// Marcas base + las que ya existen en anuncios (Motorola, Honor, etc.)
 const marcas = computed(() => {
   const todas = [...marcasBase, ...anuncios.lista.map((t) => t.marca)]
   return [...new Set(todas)].filter((m) => m && m !== '__otra__')
 })
 
-// Marca final: la elegida, o la escrita si eligió "Otra"
 const marcaFinal = computed(() => {
   if (form.marca !== '__otra__') return form.marca
   const texto = form.marcaOtra.trim()
@@ -61,10 +60,24 @@ const incompleto = computed(
 function elegirImagenes(e) {
   const archivos = [...e.target.files].slice(0, 4)
   imagenes.value = archivos.map((a) => ({
+    archivo: a,
     nombre: a.name,
     tamano: Math.round(a.size / 1024) + ' kb',
     tipo: a.type.split('/')[1] || 'img',
   }))
+}
+
+async function subirTodas() {
+  const subidas = []
+  for (const img of imagenes.value) {
+    try {
+      const id = await subirImagen(img.archivo)
+      subidas.push({ id, nombre: img.nombre, tamano: img.tamano, tipo: img.tipo })
+    } catch (e) {
+      console.error('No se pudo subir la imagen a CouchDB:', e)
+    }
+  }
+  return subidas
 }
 
 async function crear() {
@@ -73,6 +86,8 @@ async function crear() {
 
   guardando.value = true
   try {
+    const subidas = await subirTodas()
+
     const promesa = anuncios.crear({
       titulo: form.titulo.trim(),
       precio: Number(form.precio),
@@ -86,10 +101,16 @@ async function crear() {
       vendedor: form.vendedor.trim(),
       telefono: form.telefono.trim(),
       descripcion: form.descripcion.trim(),
-      imagenes: imagenes.value,
+      imagenes: subidas,
     })
 
-    aviso.mostrar('El anuncio se guardó satisfactoriamente', 3)
+    const faltaron = imagenes.value.length - subidas.length
+    aviso.mostrar(
+      faltaron > 0
+        ? 'Anuncio guardado, pero no se pudieron subir algunas imágenes'
+        : 'El anuncio se guardó satisfactoriamente',
+      3,
+    )
     router.push('/')
     await promesa
   } catch (e) {
