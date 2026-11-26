@@ -30,7 +30,9 @@ const pagina = ref(1)
 const porPagina = ref(8)
 const opcionesPorPagina = [4, 8, 12, 25]
 
-const marcas = computed(() => [...new Set(anuncios.lista.map((t) => t.marca))])
+const marcas = computed(() =>
+  [...new Set(anuncios.lista.map((t) => t.marca))].filter((m) => m && m !== '__otra__'),
+)
 const sistemas = computed(() => [...new Set(anuncios.lista.map((t) => t.sistema))])
 const pantallas = computed(() =>
   [...new Set(anuncios.lista.map((t) => t.pantalla))].sort((a, b) => b - a),
@@ -92,8 +94,22 @@ function limpiar() {
 <template>
   <div class="container-fluid py-4">
     <div class="row">
+      <!-- Botón de filtros (solo celular) -->
+      <div class="col-12 d-md-none mb-2">
+        <button
+          class="btn btn-outline-russet w-100"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#panelFiltros"
+          aria-expanded="false"
+          aria-controls="panelFiltros"
+        >
+          <i class="bi bi-funnel"></i> Filtros
+        </button>
+      </div>
+
       <!-- Panel de filtros -->
-      <aside class="col-12 col-md-3 col-lg-2 mb-3">
+      <aside id="panelFiltros" class="collapse d-md-block col-12 col-md-3 col-lg-2 mb-3">
         <h6 class="texto-russet">Marca</h6>
         <div v-for="m in marcas" :key="m" class="form-check">
           <input
@@ -192,7 +208,12 @@ function limpiar() {
           </div>
         </div>
 
-        <p v-if="filtrados.length === 0" class="text-muted">No hay teléfonos con esos filtros.</p>
+        <p v-if="anuncios.cargando" class="text-muted">Cargando teléfonos...</p>
+        <p v-else-if="filtrados.length === 0" class="text-muted">
+          No hay teléfonos con esos filtros.
+        </p>
+
+        <!-- Tarjetas -->
         <div class="row g-3">
           <div v-for="tel in paginados" :key="tel.id" class="col-12 col-sm-6 col-lg-3">
             <CardTelefono :telefono="tel" />
