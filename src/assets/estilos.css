@@ -1269,3 +1269,20 @@
   background-color: #2a1a18;
   color: #f1ecea;
 }
+/* ===== Botones Inicio / Comprar siempre visibles ===== */
+.barra-acciones {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border-top: 1px solid #dee2e6;
+  z-index: 1030;
+}
+
+.barra-acciones .btn {
+  flex: 1;
+}
