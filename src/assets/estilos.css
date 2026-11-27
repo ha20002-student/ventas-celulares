@@ -1286,3 +1286,106 @@
 .barra-acciones .btn {
   flex: 1;
 }
+/* ===== Botón flotante "Nuevo anuncio" ===== */
+.fab-crear {
+  --fab-relleno: #c9a24f; /* dorado mate. Para verde salvia usa #5e8c7a */
+  --fab-icono: #2b1412;
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1035;
+  display: grid;
+  place-items: center;
+  width: 3.7rem;
+  height: 3.7rem;
+  border-radius: 50%;
+  color: var(--fab-icono);
+  font-size: 1.8rem;
+  text-decoration: none;
+  transition: transform 0.25s ease;
+}
+
+.fab-crear::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  z-index: -2;
+  border-radius: 50%;
+  background: conic-gradient(
+    from var(--angulo),
+    #7b332f,
+    #e0847a,
+    #f2c14e,
+    #e0847a,
+    #9a4741,
+    #7b332f
+  );
+  animation: giro-borde 3s linear infinite;
+}
+
+.fab-crear::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--fab-relleno);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transition: filter 0.2s ease;
+}
+
+.fab-crear i {
+  transition: transform 0.3s ease;
+}
+
+.fab-crear:hover {
+  color: var(--fab-icono);
+  transform: scale(1.07);
+}
+
+.fab-crear:hover::before {
+  animation-duration: 1.2s;
+}
+
+.fab-crear:hover::after {
+  filter: brightness(1.08);
+}
+
+.fab-crear:hover i {
+  transform: rotate(90deg);
+}
+
+.fab-crear:focus-visible {
+  outline: 3px solid rgba(201, 162, 79, 0.6);
+  outline-offset: 4px;
+}
+
+/* Mensaje al pasar el cursor */
+.fab-tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  background: #2b1412;
+  color: #fff;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(6px, -50%);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.fab-crear:hover .fab-tip,
+.fab-crear:focus-visible .fab-tip {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Espacio al final de la página para no tapar la paginación */
+.fab-espacio {
+  height: 5.5rem;
+}
