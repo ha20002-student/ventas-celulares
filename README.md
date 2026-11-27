@@ -1,11 +1,12 @@
-#// ventas-celulares
-#// Tienda CellPhone
+# ventas-celulares
+
+# Tienda CellPhone
 
 Sitio web tipo marketplace para comprar y vender teléfonos nuevos y usados. Funciona en computadora y en celular.
 
 Sitio publicado: Sitio publicado: https://ventas-celulares.web.app
 
-##// Funcionalidades
+## Funcionalidades
 
 - Listado de teléfonos con filtros por marca, sistema, pantalla, estado (nuevo) y rango de precio.
 - Buscador, orden por precio y fecha, y paginación.
@@ -16,18 +17,18 @@ Sitio publicado: Sitio publicado: https://ventas-celulares.web.app
 - Modo oscuro.
 - Diseño adaptable a celular.
 
-##// Tecnologías
+## Tecnologías
 
 Vue 3, Vite, Pinia, Vue Router, Bootstrap 5, Chart.js, Firebase (Firestore) y CouchDB.
 
-##// Dónde se guarda cada cosa
+## Dónde se guarda cada cosa
 
 - **Anuncios:** Firebase Firestore (en la nube).
 - **Imágenes:** CouchDB local, en la base `fpi-imagenes`.
 
 Las imágenes de un anuncio solo se ven en la computadora donde corre el CouchDB que las guardó. En otra computadora, el anuncio aparece con un recuadro sin foto.
 
-##// Instalación
+## Instalación
 
 Requisitos: Node 24 y CouchDB.
 
@@ -61,7 +62,7 @@ Requisitos: Node 24 y CouchDB.
 
    Se abre en `http://localhost:5173`.
 
-##// Producción
+## Producción
 
 Para generar la versión de producción:
 
@@ -85,5 +86,6 @@ Las variables `VITE_FIREBASE_...` del archivo `.env.local` se incluyen al compil
 
 Para ver imágenes desde el sitio publicado (https) con un CouchDB local (http), el navegador debe permitir contenido inseguro para el sitio.
 
-##// Autor
-[Paola Melissa Hernández Alvarado, carnet: HA20002] — [materia: FPI]
+## Autor
+
+Paola Melissa Hernández Alvarado, carnet: HA20002 — materia: FPI
