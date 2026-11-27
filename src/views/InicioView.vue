@@ -27,7 +27,7 @@ const opcionesOrden = [
 
 // Paginación
 const pagina = ref(1)
-const porPagina = ref(8)
+const porPagina = ref(25)
 const opcionesPorPagina = [4, 8, 12, 25]
 
 const marcas = computed(() =>

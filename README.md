@@ -3,7 +3,7 @@
 
 Sitio web tipo marketplace para comprar y vender teléfonos nuevos y usados. Funciona en computadora y en celular.
 
-Sitio publicado: [pega aquí la dirección de Netlify]
+Sitio publicado: Sitio publicado: https://ventas-celulares.web.app
 
 ##// Funcionalidades
 
@@ -63,11 +63,27 @@ Requisitos: Node 24 y CouchDB.
 
 ##// Producción
 
+Para generar la versión de producción:
+
 ```sh
 npm run build
 ```
 
-Genera la carpeta `dist`. En Netlify, las variables `VITE_FIREBASE_...` se cargan en _Site configuration → Environment variables_. Para ver imágenes desde el sitio publicado (https) con un CouchDB local (http), el navegador debe permitir contenido inseguro para el sitio.
+Esto crea la carpeta `dist`, que contiene el sitio compilado y optimizado. Para verla antes de publicar:
+
+```sh
+npm run preview
+```
+
+El sitio está publicado con Firebase Hosting:
+
+```sh
+firebase deploy --only hosting
+```
+
+Las variables `VITE_FIREBASE_...` del archivo `.env.local` se incluyen al compilar, por eso hay que tenerlo presente antes de correr `npm run build`.
+
+Para ver imágenes desde el sitio publicado (https) con un CouchDB local (http), el navegador debe permitir contenido inseguro para el sitio.
 
 ##// Autor
 [Paola Melissa Hernández Alvarado, carnet: HA20002] — [materia: FPI]
