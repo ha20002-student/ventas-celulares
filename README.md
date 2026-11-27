@@ -1,10 +1,8 @@
-# ventas-celulares
-
 # Tienda CellPhone
 
 Sitio web tipo marketplace para comprar y vender teléfonos nuevos y usados. Funciona en computadora y en celular.
 
-Sitio publicado: Sitio publicado: https://ventas-celulares.web.app
+Sitio publicado: https://ventas-celulares.web.app
 
 ## Funcionalidades
 
@@ -13,20 +11,21 @@ Sitio publicado: Sitio publicado: https://ventas-celulares.web.app
 - Detalle del anuncio con vendedor, teléfono, descripción, galería de fotos, botón Comprar, contacto por WhatsApp y llamada.
 - Carrito de compras y compra finalizada.
 - Formulario para publicar anuncios (hasta 4 imágenes). Si la marca no existe en la lista, se puede escribir una nueva.
+- Botón flotante para crear un nuevo anuncio desde el inicio.
 - Pantalla de estadísticas con gráficos.
 - Modo oscuro.
 - Diseño adaptable a celular.
 
 ## Tecnologías
 
-Vue 3, Vite, Pinia, Vue Router, Bootstrap 5, Chart.js, Firebase (Firestore) y CouchDB.
+Vue 3, Vite, Pinia, Vue Router, Bootstrap 5, Chart.js, Firebase (Firestore y Hosting) y CouchDB.
 
 ## Dónde se guarda cada cosa
 
-- **Anuncios:** Firebase Firestore (en la nube).
+- **Anuncios:** Firebase Firestore (en la nube). Todos los usuarios ven los mismos anuncios.
 - **Imágenes:** CouchDB local, en la base `fpi-imagenes`.
 
-Las imágenes de un anuncio solo se ven en la computadora donde corre el CouchDB que las guardó. En otra computadora, el anuncio aparece con un recuadro sin foto.
+Las imágenes de un anuncio solo se ven en la computadora donde corre el CouchDB que las guardó. En otro equipo, el anuncio aparece con un recuadro sin foto.
 
 ## Instalación
 
