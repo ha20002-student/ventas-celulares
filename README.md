@@ -1,44 +1,73 @@
-# ventas-celulares
+#// ventas-celulares
+#// Tienda CellPhone
 
-This template should help get you started developing with Vue 3 in Vite.
+Sitio web tipo marketplace para comprar y vender teléfonos nuevos y usados. Funciona en computadora y en celular.
 
-## Recommended IDE Setup
+Sitio publicado: [pega aquí la dirección de Netlify]
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+##// Funcionalidades
 
-## Recommended Browser Setup
+- Listado de teléfonos con filtros por marca, sistema, pantalla, estado (nuevo) y rango de precio.
+- Buscador, orden por precio y fecha, y paginación.
+- Detalle del anuncio con vendedor, teléfono, descripción, galería de fotos, botón Comprar, contacto por WhatsApp y llamada.
+- Carrito de compras y compra finalizada.
+- Formulario para publicar anuncios (hasta 4 imágenes). Si la marca no existe en la lista, se puede escribir una nueva.
+- Pantalla de estadísticas con gráficos.
+- Modo oscuro.
+- Diseño adaptable a celular.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+##// Tecnologías
 
-## Customize configuration
+Vue 3, Vite, Pinia, Vue Router, Bootstrap 5, Chart.js, Firebase (Firestore) y CouchDB.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+##// Dónde se guarda cada cosa
 
-## Project Setup
+- **Anuncios:** Firebase Firestore (en la nube).
+- **Imágenes:** CouchDB local, en la base `fpi-imagenes`.
 
-```sh
-npm install
-```
+Las imágenes de un anuncio solo se ven en la computadora donde corre el CouchDB que las guardó. En otra computadora, el anuncio aparece con un recuadro sin foto.
 
-### Compile and Hot-Reload for Development
+##// Instalación
 
-```sh
-npm run dev
-```
+Requisitos: Node 24 y CouchDB.
 
-### Compile and Minify for Production
+1. Instalar dependencias:
+
+   ```sh
+   npm install
+   ```
+
+2. Crear un archivo `.env.local` en la raíz con los datos de Firebase:
+
+   ```
+   VITE_FIREBASE_API_KEY=
+   VITE_FIREBASE_AUTH_DOMAIN=
+   VITE_FIREBASE_PROJECT_ID=
+   VITE_FIREBASE_STORAGE_BUCKET=
+   VITE_FIREBASE_MESSAGING_SENDER_ID=
+   VITE_FIREBASE_APP_ID=
+   ```
+
+3. Configurar CouchDB (`http://localhost:5984/_utils`):
+   - Crear la base de datos `fpi-imagenes` (no particionada).
+   - En Permisos de esa base, quitar `admin` de Members y de Admins para que sea pública.
+   - En Configuración → CORS, habilitar CORS para todos los dominios.
+
+4. Iniciar el sitio:
+
+   ```sh
+   npm run dev
+   ```
+
+   Se abre en `http://localhost:5173`.
+
+##// Producción
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+Genera la carpeta `dist`. En Netlify, las variables `VITE_FIREBASE_...` se cargan en _Site configuration → Environment variables_. Para ver imágenes desde el sitio publicado (https) con un CouchDB local (http), el navegador debe permitir contenido inseguro para el sitio.
 
-```sh
-npm run test:unit
-```
+##// Autor
+[Paola Melissa Hernández Alvarado, carnet: HA20002] — [materia: FPI]
